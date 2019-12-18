@@ -20,6 +20,7 @@ rpm: orchid-server-${version}-1.x86_64.rpm
 
 orchid-server_${version}_darwin-amd64.deb: orchid-server
     ifeq ($(uname-s),Linux)
+        apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install ruby ruby-dev rubygems build-essential rpm help2man libc++1 && gem install --no-ri --no-rdoc fpm
         ${help2man}
         ${fpm_deb}
     else
@@ -28,6 +29,7 @@ orchid-server_${version}_darwin-amd64.deb: orchid-server
 
 orchid-server-${version}-1.x86_64.rpm: orchid-server
     ifeq ($(uname-s),Linux)
+        apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install ruby ruby-dev rubygems build-essential rpm help2man libc++1 && gem install --no-ri --no-rdoc fpm
         ${help2man}
         ${fpm_rpm}
     else
@@ -35,8 +37,8 @@ orchid-server-${version}-1.x86_64.rpm: orchid-server
     endif
 
 orchid-server:
-	$(MAKE) -C server target=lnx
-	cp -a server/out-lnx/x86_64/orchid ./orchid-server
+	$(MAKE) -C server target=lnx debug=crossndk
+	cp -a server/out-lnx/x86_64/orchidd ./orchid-server
 
 .PHONY: clean
 clean:
